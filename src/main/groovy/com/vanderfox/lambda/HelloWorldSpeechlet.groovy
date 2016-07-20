@@ -1,7 +1,6 @@
-package com.vanderfox.hero
+package com.vanderfox.lambda
 
 import com.amazon.speech.slu.Intent
-import com.amazon.speech.slu.Slot
 import com.amazon.speech.speechlet.IntentRequest
 import com.amazon.speech.speechlet.LaunchRequest
 import com.amazon.speech.speechlet.Session
@@ -19,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory
 
 /**
- * This app shows how to connect to hero with Spring Social, Groovy, and Alexa.
+ * This app shows how to connect to lambda with Spring Social, Groovy, and Alexa.
  * @author Lee Fox and Ryan Vanderwerf
  */
 @CompileStatic

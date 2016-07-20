@@ -21,7 +21,7 @@ apply plugin: 'java'
 apply plugin: 'jp.classmethod.aws.lambda'
 apply plugin: "com.github.johnrengelman.shadow"
 
-group 'vanderfox.alexa.hero'
+group 'vanderfox.alexa.lambda'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -74,8 +74,8 @@ aws {
 }
 
 task deploy(type: AWSLambdaMigrateFunctionTask, dependsOn: build) {
-    functionName = "HeroGroovy"
-    handler = "com.vanderfox.hero.HeroSpeechletRequestStreamHandler"
+    functionName = "HelloWorldXX"
+    handler = "com.vanderfox.lambda.HelloWorldSpeechletRequestStreamHandler"
     role = "arn:aws:iam::${aws.accountId}:role/lambda_basic_execution"
     runtime = Runtime.Java8
     zipFile = buildZip.archivePath
@@ -98,6 +98,6 @@ task runMain() {
 
 
 shadowJar {
-    baseName = 'heroQuiz-fat'
+    baseName = 'helloWorld-fat'
     classifier = null
 }

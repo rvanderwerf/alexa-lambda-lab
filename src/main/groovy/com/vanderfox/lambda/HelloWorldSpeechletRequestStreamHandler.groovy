@@ -1,4 +1,4 @@
-package com.vanderfox.hero
+package com.vanderfox.lambda
 
 import com.amazon.speech.speechlet.lambda.SpeechletRequestStreamHandler
 import org.slf4j.Logger
