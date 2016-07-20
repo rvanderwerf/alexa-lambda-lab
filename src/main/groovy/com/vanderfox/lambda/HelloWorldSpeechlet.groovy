@@ -49,17 +49,12 @@ public class HelloWorldSpeechlet implements Speechlet {
 
         Intent intent = request.getIntent();
         String intentName = (intent != null) ? intent.getName() : null;
-        String state = session.getAttribute("state")
         switch (intentName) {
             case "ResponseIntent":
-                switch (state) {
-                    case "askQuestion":
-                        break
-                    default:
-                        break
-                }
+                getWelcomeResponse(session);
                 break
             default:
+                getWelcomeResponse(session);
                 break
         }
     }
@@ -78,16 +73,16 @@ public class HelloWorldSpeechlet implements Speechlet {
      * @return SpeechletResponse spoken and visual response for the given intent
      */
     private SpeechletResponse getWelcomeResponse(final Session session) {
-        String speechText = "Welcome to Hero Quiz.  Please tell me the first players name.";
-        session.setAttribute("state", "verifyPlayerName")
-        askResponseFancy(speechText, speechText, "https://s3.amazonaws.com/vanderfox-sounds/test.mp3")
+        String speechText = "Hello World!  You've just created your first Alexa skill!";
+        tellResponse(speechText, speechText)
+
 
     }
 
     private SpeechletResponse askResponse(String cardText, String speechText) {
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();
-        card.setTitle("Hero Quiz");
+        card.setTitle("Hello World");
         card.setContent(cardText);
 
         // Create the plain text output.
@@ -104,7 +99,7 @@ public class HelloWorldSpeechlet implements Speechlet {
     private SpeechletResponse tellResponse(String cardText, String speechText) {
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();
-        card.setTitle("Hero Quiz");
+        card.setTitle("Hello World");
         card.setContent(cardText);
 
         // Create the plain text output.
@@ -121,7 +116,7 @@ public class HelloWorldSpeechlet implements Speechlet {
     private SpeechletResponse askResponseFancy(String cardText, String speechText, String fileUrl) {
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();
-        card.setTitle("Hero Quiz");
+        card.setTitle("Hello World");
         card.setContent(cardText);
 
         // Create the plain text output.
