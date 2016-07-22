@@ -1,6 +1,7 @@
 package com.vanderfox.lambda
 
 import com.amazon.speech.slu.Intent
+import com.amazon.speech.slu.Slot
 import com.amazon.speech.speechlet.IntentRequest
 import com.amazon.speech.speechlet.LaunchRequest
 import com.amazon.speech.speechlet.Session
@@ -73,8 +74,8 @@ public class LambdaSpeechlet implements Speechlet {
      * @return SpeechletResponse spoken and visual response for the given intent
      */
     private SpeechletResponse getWelcomeResponse(final Session session) {
-        String speechText = "Hello World!  You've just created your first Alexa skill!";
-        tellResponse(speechText, speechText)
+        String speechText = "What is your favorite programming language?";
+        askResponse(speechText, speechText)
     }
 
     private SpeechletResponse askResponse(String cardText, String speechText) {
