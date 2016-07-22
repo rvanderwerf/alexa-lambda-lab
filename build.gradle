@@ -75,7 +75,7 @@ aws {
 
 task deploy(type: AWSLambdaMigrateFunctionTask, dependsOn: build) {
     functionName = "LambdaXX"
-    handler = "com.vanderfox.lambda.HelloWorldSpeechletRequestStreamHandler"
+    handler = "com.vanderfox.lambda.LambdaSpeechletRequestStreamHandler"
     role = "arn:aws:iam::${aws.accountId}:role/lambda_basic_execution"
     runtime = Runtime.Java8
     zipFile = buildZip.archivePath
@@ -98,6 +98,6 @@ task runMain() {
 
 
 shadowJar {
-    baseName = 'helloWorld-fat'
+    baseName = 'lambda-fat'
     classifier = null
 }
