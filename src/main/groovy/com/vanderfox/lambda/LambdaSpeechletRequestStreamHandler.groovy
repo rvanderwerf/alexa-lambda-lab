@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory
 /**
  * Created by Ryan Vanderwerf and Lee Fox on 3/18/16.
  */
-public final class HelloWorldSpeechletRequestStreamHandler extends SpeechletRequestStreamHandler {
-    private  static final Logger log = LoggerFactory.getLogger(HelloWorldSpeechletRequestStreamHandler.class)
+public final class LambdaSpeechletRequestStreamHandler extends SpeechletRequestStreamHandler {
+    private  static final Logger log = LoggerFactory.getLogger(LambdaSpeechletRequestStreamHandler.class)
     private static final Set<String> supportedApplicationIds = new HashSet<String>()
     static {
         /*
@@ -17,7 +17,7 @@ public final class HelloWorldSpeechletRequestStreamHandler extends SpeechletRequ
          */
         final Properties properties = new Properties();
         try {
-            InputStream stream = HelloWorldSpeechlet.class.getClassLoader()getResourceAsStream("springSocial.properties")
+            InputStream stream = LambdaSpeechlet.class.getClassLoader()getResourceAsStream("springSocial.properties")
             properties.load(stream);
 
             def property = properties.getProperty("awsApplicationId")
@@ -35,8 +35,8 @@ public final class HelloWorldSpeechletRequestStreamHandler extends SpeechletRequ
     }
 
 
-    public HelloWorldSpeechletRequestStreamHandler() {
-        super(new HelloWorldSpeechlet(), supportedApplicationIds);
+    public LambdaSpeechletRequestStreamHandler() {
+        super(new LambdaSpeechlet(), supportedApplicationIds);
     }
 
 

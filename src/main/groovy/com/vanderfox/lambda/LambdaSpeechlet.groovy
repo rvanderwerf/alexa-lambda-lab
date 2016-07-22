@@ -22,8 +22,8 @@ import org.slf4j.LoggerFactory
  * @author Lee Fox and Ryan Vanderwerf
  */
 @CompileStatic
-public class HelloWorldSpeechlet implements Speechlet {
-    private static final Logger log = LoggerFactory.getLogger(HelloWorldSpeechlet.class);
+public class LambdaSpeechlet implements Speechlet {
+    private static final Logger log = LoggerFactory.getLogger(LambdaSpeechlet.class);
 
     @Override
     public void onSessionStarted(final SessionStartedRequest request, final Session session)
@@ -75,14 +75,12 @@ public class HelloWorldSpeechlet implements Speechlet {
     private SpeechletResponse getWelcomeResponse(final Session session) {
         String speechText = "Hello World!  You've just created your first Alexa skill!";
         tellResponse(speechText, speechText)
-
-
     }
 
     private SpeechletResponse askResponse(String cardText, String speechText) {
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();
-        card.setTitle("Hello World");
+        card.setTitle("Lambda Lab");
         card.setContent(cardText);
 
         // Create the plain text output.
@@ -99,7 +97,7 @@ public class HelloWorldSpeechlet implements Speechlet {
     private SpeechletResponse tellResponse(String cardText, String speechText) {
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();
-        card.setTitle("Hello World");
+        card.setTitle("Lambda Lab");
         card.setContent(cardText);
 
         // Create the plain text output.
@@ -116,7 +114,7 @@ public class HelloWorldSpeechlet implements Speechlet {
     private SpeechletResponse askResponseFancy(String cardText, String speechText, String fileUrl) {
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();
-        card.setTitle("Hello World");
+        card.setTitle("Lambda Lab");
         card.setContent(cardText);
 
         // Create the plain text output.

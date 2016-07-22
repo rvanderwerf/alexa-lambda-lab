@@ -74,7 +74,7 @@ aws {
 }
 
 task deploy(type: AWSLambdaMigrateFunctionTask, dependsOn: build) {
-    functionName = "HelloWorldXX"
+    functionName = "LambdaXX"
     handler = "com.vanderfox.lambda.HelloWorldSpeechletRequestStreamHandler"
     role = "arn:aws:iam::${aws.accountId}:role/lambda_basic_execution"
     runtime = Runtime.Java8
