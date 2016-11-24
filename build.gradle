@@ -74,7 +74,7 @@ aws {
 }
 
 task deploy(type: AWSLambdaMigrateFunctionTask, dependsOn: build) {
-    functionName = "LambdaXX"
+    functionName = "SpeakerInfo"
     handler = "com.vanderfox.lambda.LambdaSpeechletRequestStreamHandler"
     role = "arn:aws:iam::${aws.accountId}:role/lambda_basic_execution"
     runtime = Runtime.Java8

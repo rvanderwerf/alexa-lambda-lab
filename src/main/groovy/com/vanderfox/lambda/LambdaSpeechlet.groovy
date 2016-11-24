@@ -49,13 +49,17 @@ public class LambdaSpeechlet implements Speechlet {
                 session.getSessionId());
 
         Intent intent = request.getIntent();
+        Slot Speaker = intent.getSlot("Speaker")
         String intentName = (intent != null) ? intent.getName() : null;
         switch (intentName) {
-            case "ResponseIntent":
-                getWelcomeResponse(session);
+            case "responseIntent":
+                getWelcomeResponse(session)
+                break
+            case "WhoIntent":
+                return lambdaResponse(session, Speaker)
                 break
             default:
-                getWelcomeResponse(session);
+                getWelcomeResponse(session)
                 break
         }
     }
@@ -93,6 +97,17 @@ public class LambdaSpeechlet implements Speechlet {
         reprompt.setOutputSpeech(speech);
 
         SpeechletResponse.newAskResponse(speech, reprompt, card);
+    }
+
+    private SpeechletResponse lambdaResponse(final Session session, Slot speaker) {
+        String speakerName = speaker.value
+        String speechText = ""
+        if("ryan".equalsIgnoreCase(speakerName)) {
+            speechText = "Ryan v g a Vanderwerf is a software engineer on the Grails Team at OCI, which is the new home to Grails.  It shouldn't be a surprise to you to know that he is actively involved in the Groovy and Grails community.  Ryan likes to modify all things like cars, home automation, phones, gadgets and even yours truly, Alexa."
+        } else {
+            speechText = "Lee Fox is the Cloud architect and operations manager at Starmount.  His background is in development as a Java Developer, and while he tries with Groovy, I can assure you that he doesn't write pretty Groovy code."
+        }
+        tellResponse(speechText, speechText)
     }
 
     private SpeechletResponse tellResponse(String cardText, String speechText) {
