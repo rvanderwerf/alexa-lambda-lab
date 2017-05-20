@@ -48,16 +48,8 @@ public class LambdaSpeechlet implements Speechlet {
         log.info("onIntent requestId={}, sessionId={}", request.getRequestId(),
                 session.getSessionId());
 
-        Intent intent = request.getIntent();
-        Slot Speaker = intent.getSlot("Speaker")
         String intentName = (intent != null) ? intent.getName() : null;
         switch (intentName) {
-            case "responseIntent":
-                getWelcomeResponse(session)
-                break
-            case "WhoIntent":
-                return lambdaResponse(session, Speaker)
-                break
             default:
                 getWelcomeResponse(session)
                 break
@@ -72,41 +64,8 @@ public class LambdaSpeechlet implements Speechlet {
         // any cleanup logic goes here
     }
 
-    /**
-     * Creates and returns a {@code SpeechletResponse} with a welcome message.
-     *
-     * @return SpeechletResponse spoken and visual response for the given intent
-     */
     private SpeechletResponse getWelcomeResponse(final Session session) {
-        String speechText = "What is your favorite programming language?";
-        askResponse(speechText, speechText)
-    }
-
-    private SpeechletResponse askResponse(String cardText, String speechText) {
-        // Create the Simple card content.
-        SimpleCard card = new SimpleCard();
-        card.setTitle("Lambda Lab");
-        card.setContent(cardText);
-
-        // Create the plain text output.
-        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(speechText);
-
-        // Create reprompt
-        Reprompt reprompt = new Reprompt();
-        reprompt.setOutputSpeech(speech);
-
-        SpeechletResponse.newAskResponse(speech, reprompt, card);
-    }
-
-    private SpeechletResponse lambdaResponse(final Session session, Slot speaker) {
-        String speakerName = speaker.value
-        String speechText = ""
-        if("ryan".equalsIgnoreCase(speakerName)) {
-            speechText = "Ryan v g a Vanderwerf is a software engineer on the Grails Team at OCI, which is the new home to Grails.  It shouldn't be a surprise to you to know that he is actively involved in the Groovy and Grails community.  Ryan likes to modify all things like cars, home automation, phones, gadgets and even yours truly, Alexa."
-        } else {
-            speechText = "Lee Fox is the Cloud architect and operations manager at Starmount.  His background is in development as a Java Developer, and while he tries with Groovy, I can assure you that he doesn't write pretty Groovy code."
-        }
+        String speechText = "Hello World!";
         tellResponse(speechText, speechText)
     }
 
@@ -125,25 +84,5 @@ public class LambdaSpeechlet implements Speechlet {
         reprompt.setOutputSpeech(speech);
 
         SpeechletResponse.newTellResponse(speech, card);
-    }
-
-    private SpeechletResponse askResponseFancy(String cardText, String speechText, String fileUrl) {
-        // Create the Simple card content.
-        SimpleCard card = new SimpleCard();
-        card.setTitle("Lambda Lab");
-        card.setContent(cardText);
-
-        // Create the plain text output.
-        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(speechText);
-        log.info("making welcome audio")
-        SsmlOutputSpeech fancySpeech = new SsmlOutputSpeech()
-        fancySpeech.ssml = "<speak><audio src=\"${fileUrl}\"/> ${speechText}</speak>"
-        log.info("finished welcome audio")
-        // Create reprompt
-        Reprompt reprompt = new Reprompt();
-        reprompt.setOutputSpeech(fancySpeech);
-
-        SpeechletResponse.newAskResponse(fancySpeech, reprompt, card);
     }
 }
