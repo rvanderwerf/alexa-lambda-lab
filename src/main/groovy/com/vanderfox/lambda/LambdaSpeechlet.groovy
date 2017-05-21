@@ -46,10 +46,17 @@ public class LambdaSpeechlet implements Speechlet {
     public SpeechletResponse onIntent(final IntentRequest request, final Session session)
             throws SpeechletException {
         log.info("onIntent requestId={}, sessionId={}", request.getRequestId(),
-                session.getSessionId());
+                session.getSessionId())
         Intent intent = request.getIntent()
+        Slot languageChoice = intent.getSlot("languageChoice")
         String intentName = (intent != null) ? intent.getName() : null;
         switch (intentName) {
+            case "responseIntent":
+                getWelcomeResponse(session)
+                break
+            case "LambdaResponseIntent":
+                return lambdaResponse(session, languageChoice)
+                break
             default:
                 getWelcomeResponse(session)
                 break
@@ -64,9 +71,14 @@ public class LambdaSpeechlet implements Speechlet {
         // any cleanup logic goes here
     }
 
+    private SpeechletResponse lambdaResponse(final Session session, Slot languageChoice) {
+        GString speechText = "Cool.  My favorite language is ${languageChoice.value} as well."
+        tellResponse(speechText.toString(), speechText.toString())
+    }
+
     private SpeechletResponse getWelcomeResponse(final Session session) {
-        String speechText = "Hello World!";
-        tellResponse(speechText, speechText)
+        String speechText = "What is your favorite programming language?";
+        askResponse(speechText, speechText)
     }
 
     private SpeechletResponse askResponse(String cardText, String speechText) {
