@@ -10,7 +10,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "jp.classmethod.aws:gradle-aws-plugin:0.22"
+        classpath "jp.classmethod.aws:gradle-aws-plugin:0.35"
         classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
     }
 }
