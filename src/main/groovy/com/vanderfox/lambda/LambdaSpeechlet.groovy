@@ -69,6 +69,23 @@ public class LambdaSpeechlet implements Speechlet {
         tellResponse(speechText, speechText)
     }
 
+    private SpeechletResponse askResponse(String cardText, String speechText) {
+        // Create the Simple card content.
+        SimpleCard card = new SimpleCard();
+        card.setTitle("Hello World");
+        card.setContent(cardText);
+
+        // Create the plain text output.
+        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+        speech.setText(speechText);
+
+        // Create reprompt
+        Reprompt reprompt = new Reprompt();
+        reprompt.setOutputSpeech(speech);
+
+        SpeechletResponse.newAskResponse(speech, reprompt, card);
+    }
+
     private SpeechletResponse tellResponse(String cardText, String speechText) {
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();
