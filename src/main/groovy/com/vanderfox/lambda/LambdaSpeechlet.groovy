@@ -47,7 +47,7 @@ public class LambdaSpeechlet implements Speechlet {
             throws SpeechletException {
         log.info("onIntent requestId={}, sessionId={}", request.getRequestId(),
                 session.getSessionId());
-
+        Intent intent = request.getIntent()
         String intentName = (intent != null) ? intent.getName() : null;
         switch (intentName) {
             default:

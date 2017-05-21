@@ -50,10 +50,6 @@ dependencies {
     compile 'ch.qos.logback:logback-classic:1.0.13'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.3'
     compile 'org.grails:grails-validation:3.0.4'
-    //compile 'org.grails:grails-datastore-gorm-dynamodb:4.0.0.M2'
-    //compile "org.grails.plugins:aws-sdk:1.10.44"
-
-
 
 }
 
@@ -74,9 +70,9 @@ aws {
 }
 
 task deploy(type: AWSLambdaMigrateFunctionTask, dependsOn: build) {
-    functionName = "SpeakerInfo"
+    functionName = "LambdaXX"
     handler = "com.vanderfox.lambda.LambdaSpeechletRequestStreamHandler"
-    role = "arn:aws:iam::${aws.accountId}:role/lambda_basic_execution"
+    role = "arn:aws:iam::${System.getenv('ACCOUNT_ID')}:role/lambda_basic_execution"
     runtime = Runtime.Java8
     zipFile = buildZip.archivePath
     memorySize = 512
