@@ -32,7 +32,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
  */
 @CompileStatic
 public class LambdaSpeechlet implements Speechlet {
-    private static final Logger log = LoggerFactory.getLogger(LambdaSpeechlet.class);
+    private static final Logger log = LoggerFactory.getLogger(LambdaSpeechlet.class)
 
     @Override
     public void onSessionStarted(final SessionStartedRequest request, final Session session)
@@ -46,8 +46,8 @@ public class LambdaSpeechlet implements Speechlet {
     public SpeechletResponse onLaunch(final LaunchRequest request, final Session session)
             throws SpeechletException {
         log.info("onLaunch requestId={}, sessionId={}", request.getRequestId(),
-                session.getSessionId());
-        getWelcomeResponse(session);
+                session.getSessionId())
+        getWelcomeResponse(session)
     }
 
     @Override
@@ -57,7 +57,7 @@ public class LambdaSpeechlet implements Speechlet {
                 session.getSessionId())
         Intent intent = request.getIntent()
         Slot languageChoice = intent.getSlot("languageChoice")
-        String intentName = (intent != null) ? intent.getName() : null;
+        String intentName = (intent != null) ? intent.getName() : null
         switch (intentName) {
             case "responseIntent":
                 getWelcomeResponse(session)
@@ -75,7 +75,7 @@ public class LambdaSpeechlet implements Speechlet {
     public void onSessionEnded(final SessionEndedRequest request, final Session session)
             throws SpeechletException {
         log.info("onSessionEnded requestId={}, sessionId={}", request.getRequestId(),
-                session.getSessionId());
+                session.getSessionId())
         // any cleanup logic goes here
     }
 
@@ -85,43 +85,43 @@ public class LambdaSpeechlet implements Speechlet {
     }
 
     private SpeechletResponse getWelcomeResponse(final Session session) {
-        String speechText = "Let's get started with a question.\n\n";
+        String speechText = "Let's get started with a question.\n\n"
         speechText += askQuestion(session)
         tellResponse(speechText, speechText)
     }
 
     private SpeechletResponse askResponse(String cardText, String speechText) {
         // Create the Simple card content.
-        SimpleCard card = new SimpleCard();
-        card.setTitle("Hello World");
-        card.setContent(cardText);
+        SimpleCard card = new SimpleCard()
+        card.setTitle("Hello World")
+        card.setContent(cardText)
 
         // Create the plain text output.
-        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(speechText);
+        PlainTextOutputSpeech speech = new PlainTextOutputSpeech()
+        speech.setText(speechText)
 
         // Create reprompt
-        Reprompt reprompt = new Reprompt();
-        reprompt.setOutputSpeech(speech);
+        Reprompt reprompt = new Reprompt()
+        reprompt.setOutputSpeech(speech)
 
-        SpeechletResponse.newAskResponse(speech, reprompt, card);
+        SpeechletResponse.newAskResponse(speech, reprompt, card)
     }
 
     private SpeechletResponse tellResponse(String cardText, String speechText) {
         // Create the Simple card content.
-        SimpleCard card = new SimpleCard();
-        card.setTitle("Lambda Lab");
-        card.setContent(cardText);
+        SimpleCard card = new SimpleCard()
+        card.setTitle("Lambda Lab")
+        card.setContent(cardText)
 
         // Create the plain text output.
-        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(speechText);
+        PlainTextOutputSpeech speech = new PlainTextOutputSpeech()
+        speech.setText(speechText)
 
         // Create reprompt
-        Reprompt reprompt = new Reprompt();
-        reprompt.setOutputSpeech(speech);
+        Reprompt reprompt = new Reprompt()
+        reprompt.setOutputSpeech(speech)
 
-        SpeechletResponse.newTellResponse(speech, card);
+        SpeechletResponse.newTellResponse(speech, card)
     }
 
     private String askQuestion(final Session session) {
