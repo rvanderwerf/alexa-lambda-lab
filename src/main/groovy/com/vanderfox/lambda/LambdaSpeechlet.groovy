@@ -125,11 +125,26 @@ public class LambdaSpeechlet implements Speechlet {
     }
 
     private String askQuestion(final Session session) {
-        return getRandomQuestion(session)
+        String speechText = ""
+        Question question = getRandomQuestion(session)
+        speechText += "\n"
+        speechText += question.getQuestion() + "\n"
+        String[] options = question.getOptions()
+        int index = 1
+        for(String option: options) {
+            speechText += (index++) + "\n\n\n\n" + option + "\n\n\n"
+        }
+        speechText
     }
 
     private Question getRandomQuestion(Session session) {
-        int tableRowCount = Integer.parseInt((String) session.getAttribute("tableRowCount"))
+        AmazonDynamoDBClient amazonDynamoDBClient;
+        amazonDynamoDBClient = new AmazonDynamoDBClient();
+        ScanRequest req = new ScanRequest();
+        req.setTableName("HeroQuiz");
+        ScanResult result = amazonDynamoDBClient.scan(req)
+        List quizItems = result.items
+        int tableRowCount = quizItems.size()
         int questionIndex = (new Random().nextInt() % tableRowCount).abs()
         log.info("The question index is:  " + questionIndex)
         Question question = getQuestion(questionIndex)
