@@ -15,8 +15,16 @@ import com.amazon.speech.ui.Reprompt
 import com.amazon.speech.ui.SimpleCard
 import com.amazon.speech.ui.SsmlOutputSpeech
 import groovy.transform.CompileStatic
+import com.vanderfox.lambda.question.Question
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory
+import com.amazonaws.services.dynamodbv2.document.DynamoDB
+import com.amazonaws.services.dynamodbv2.document.Table
+import com.amazonaws.services.dynamodbv2.document.Item
+import com.amazonaws.services.dynamodbv2.model.ScanRequest
+import com.amazonaws.services.dynamodbv2.model.ScanResult
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+
 
 /**
  * This app shows how to connect to lambda with Spring Social, Groovy, and Alexa.
@@ -77,8 +85,9 @@ public class LambdaSpeechlet implements Speechlet {
     }
 
     private SpeechletResponse getWelcomeResponse(final Session session) {
-        String speechText = "What is your favorite programming language?";
-        askResponse(speechText, speechText)
+        String speechText = "Let's get started with a question.\n\n";
+        speechText += askQuestion(session)
+        tellResponse(speechText, speechText)
     }
 
     private SpeechletResponse askResponse(String cardText, String speechText) {
@@ -114,4 +123,41 @@ public class LambdaSpeechlet implements Speechlet {
 
         SpeechletResponse.newTellResponse(speech, card);
     }
+
+    private String askQuestion(final Session session) {
+        return getRandomQuestion(session)
+    }
+
+    private Question getRandomQuestion(Session session) {
+        int tableRowCount = Integer.parseInt((String) session.getAttribute("tableRowCount"))
+        int questionIndex = (new Random().nextInt() % tableRowCount).abs()
+        log.info("The question index is:  " + questionIndex)
+        Question question = getQuestion(questionIndex)
+        question
+    }
+
+    private Question getQuestion(int questionIndex) {
+        DynamoDB dynamoDB = new DynamoDB(new AmazonDynamoDBClient())
+        Table table = dynamoDB.getTable("HeroQuiz")
+        Item item = table.getItem("Id", questionIndex)
+        def questionText = item.getString("Question")
+        def questionAnswer = item.getInt("answer")
+        def options = new String[4]
+        options[0] = item.getString("option1")
+        options[1] = item.getString("option2")
+        options[2] = item.getString("option3")
+        options[3] = item.getString("option4")
+        Question question = new Question()
+        question.setQuestion(questionText)
+        question.setOptions(options)
+        question.setAnswer(questionAnswer - 1)
+        question.setIndex(questionIndex)
+        log.info("question retrieved:  " + question.getIndex())
+        log.info("question retrieved:  " + question.getQuestion())
+        log.info("question retrieved:  " + question.getAnswer())
+        log.info("question retrieved:  " + question.getOptions().length)
+        question
+    }
+
+
 }
