@@ -17,7 +17,7 @@ public final class LambdaSpeechletRequestStreamHandler extends SpeechletRequestS
          */
         final Properties properties = new Properties()
         try {
-            InputStream stream = LambdaSpeechlet.class.getClassLoader()getResourceAsStream("springSocial.properties")
+            InputStream stream = LambdaSpeechlet.class.getClassLoader()getResourceAsStream("speechlet.properties")
             properties.load(stream)
 
             def property = properties.getProperty("awsApplicationId")

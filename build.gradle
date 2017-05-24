@@ -30,7 +30,7 @@ repositories {
 
 dependencies {
     // Groovy
-    compile 'org.codehaus.groovy:groovy:2.4.5'
+    compile 'org.codehaus.groovy:groovy:2.4.11'
     // AWS Lambda
     compile 'com.amazonaws:aws-lambda-java-core:1.1.0'
     compile 'com.amazonaws:aws-lambda-java-events:1.1.0'
@@ -40,11 +40,8 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.10'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
-    //compile 'org.apache.groovy.modules.http-builder:http-builder:0.5.2'
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
     compile 'net.sf.json-lib:json-lib:2.4:jdk15'
-    compile 'org.springframework.social:spring-social-twitter:1.1.2.RELEASE'
-    compile 'org.springframework.social:spring-social-web:1.1.4.RELEASE'
     compile 'org.slf4j:jul-to-slf4j:1.7.19'
     compile 'org.slf4j:slf4j-api:1.7.19'
     compile 'ch.qos.logback:logback-classic:1.0.13'
