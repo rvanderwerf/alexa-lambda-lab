@@ -71,6 +71,55 @@ public class LambdaSpeechlet implements Speechlet {
         }
     }
 
+    private SpeechletResponse getAnswer(Slot query, final Session session) {
+
+        def speechText
+
+        int guessedAnswer = Integer.parseInt(query.getValue()) - 1
+        log.info("Guessed answer is:  " + query.getValue())
+
+        return processAnswer(session, guessedAnswer)
+    }
+
+    private SpeechletResponse processAnswer(Session session, int guessedAnswer) {
+        def speechText
+        Question question = (Question) session.getAttribute("lastQuestionAsked")
+        def answer = question.getAnswer()
+        log.info("correct answer is:  " + answer)
+        int questionCounter = Integer.parseInt((String) session.getAttribute("questionCounter"))
+
+        questionCounter = decrementQuestionCounter(session)
+
+        if (guessedAnswer == answer) {
+            speechText = "You got it right."
+            int score = (Integer) session.getAttribute("score")
+            score++
+            session.setAttribute("score", score)
+        } else {
+            speechText = "You got it wrong."
+        }
+
+        log.info("questionCounter:  " + questionCounter)
+
+        if (questionCounter > 0) {
+            session.setAttribute("state", "askQuestion")
+            speechText = getNextQuestion(session, speechText);
+            return askResponse(speechText, speechText)
+        } else {
+            int score = (Integer) session.getAttribute("score")
+            speechText += "\n\nYou answered ${score} questions correctly."
+            return tellResponse(speechText, speechText)
+        }
+    }
+
+    private int decrementQuestionCounter(Session session) {
+        int questionCounter = (int) session.getAttribute("questionCounter")
+        questionCounter--
+        session.setAttribute("questionCounter", questionCounter)
+        questionCounter
+
+    }
+
     @Override
     public void onSessionEnded(final SessionEndedRequest request, final Session session)
             throws SpeechletException {
@@ -87,7 +136,7 @@ public class LambdaSpeechlet implements Speechlet {
     private SpeechletResponse getWelcomeResponse(final Session session) {
         String speechText = "Let's get started with a question.\n\n"
         speechText += askQuestion(session)
-        tellResponse(speechText, speechText)
+        askResponse(speechText, speechText)
     }
 
     private SpeechletResponse askResponse(String cardText, String speechText) {
@@ -148,6 +197,33 @@ public class LambdaSpeechlet implements Speechlet {
         int questionIndex = (new Random().nextInt() % tableRowCount).abs()
         log.info("The question index is:  " + questionIndex)
         Question question = getQuestion(questionIndex)
+        question
+    }
+
+    private String getNextQuestion(Session session, String speechText) {
+        Question question = getRandomUnaskedQuestion(session)
+        session.setAttribute("lastQuestionAsked", question)
+
+        speechText += "\n"
+        speechText += question.getQuestion() + "\n"
+        String[] options = question.getOptions()
+        int index = 1
+        for(String option: options) {
+            speechText += (index++) + "\n\n\n\n" + option + "\n\n\n"
+        }
+        speechText
+
+    }
+
+
+    private Question getRandomUnaskedQuestion(Session session) {
+        LinkedHashMap<String, Question> askedQuestions = (LinkedHashMap) session.getAttribute("askedQuestions")
+        Question question = getRandomQuestion(session)
+        while(askedQuestions.get(question.getQuestion()) != null) {
+            question = getRandomQuestion(session)
+        }
+        askedQuestions.put(question.getQuestion(), question)
+        session.setAttribute("askedQuestions", askedQuestions)
         question
     }
 
