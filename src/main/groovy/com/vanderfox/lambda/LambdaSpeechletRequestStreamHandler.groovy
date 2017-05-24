@@ -15,10 +15,10 @@ public final class LambdaSpeechletRequestStreamHandler extends SpeechletRequestS
          * This Id can be found on https://developer.amazon.com/edw/home.html#/ "Edit" the relevant
          * Alexa Skill and put the relevant Application Ids in this Set.
          */
-        final Properties properties = new Properties();
+        final Properties properties = new Properties()
         try {
-            InputStream stream = LambdaSpeechlet.class.getClassLoader()getResourceAsStream("springSocial.properties")
-            properties.load(stream);
+            InputStream stream = LambdaSpeechlet.class.getClassLoader()getResourceAsStream("speechlet.properties")
+            properties.load(stream)
 
             def property = properties.getProperty("awsApplicationId")
             log.info("Loading app ids: ${property}")
@@ -36,7 +36,7 @@ public final class LambdaSpeechletRequestStreamHandler extends SpeechletRequestS
 
 
     public LambdaSpeechletRequestStreamHandler() {
-        super(new LambdaSpeechlet(), supportedApplicationIds);
+        super(new LambdaSpeechlet(), supportedApplicationIds)
     }
 
 
