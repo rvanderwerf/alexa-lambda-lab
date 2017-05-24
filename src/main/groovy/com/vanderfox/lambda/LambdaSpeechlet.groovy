@@ -56,14 +56,13 @@ public class LambdaSpeechlet implements Speechlet {
         log.info("onIntent requestId={}, sessionId={}", request.getRequestId(),
                 session.getSessionId())
         Intent intent = request.getIntent()
-        Slot languageChoice = intent.getSlot("languageChoice")
         String intentName = (intent != null) ? intent.getName() : null
         switch (intentName) {
             case "responseIntent":
                 getWelcomeResponse(session)
                 break
-            case "LambdaResponseIntent":
-                return lambdaResponse(session, languageChoice)
+            case "AnswerIntent":
+                getAnswer(intent.getSlot("Answer"), session)
                 break
             default:
                 getWelcomeResponse(session)
@@ -79,15 +78,10 @@ public class LambdaSpeechlet implements Speechlet {
         // any cleanup logic goes here
     }
 
-    private SpeechletResponse lambdaResponse(final Session session, Slot languageChoice) {
-        GString speechText = "Cool.  My favorite language is ${languageChoice.value} as well."
-        tellResponse(speechText.toString(), speechText.toString())
-    }
-
     private SpeechletResponse getWelcomeResponse(final Session session) {
         String speechText = "Let's get started with a question.\n\n"
         speechText += askQuestion(session)
-        tellResponse(speechText, speechText)
+        askResponse(speechText, speechText)
     }
 
     private SpeechletResponse askResponse(String cardText, String speechText) {
@@ -148,6 +142,7 @@ public class LambdaSpeechlet implements Speechlet {
         int questionIndex = (new Random().nextInt() % tableRowCount).abs()
         log.info("The question index is:  " + questionIndex)
         Question question = getQuestion(questionIndex)
+        session.setAttribute("lastQuestionAsked", question)
         question
     }
 
@@ -174,5 +169,28 @@ public class LambdaSpeechlet implements Speechlet {
         question
     }
 
+    private SpeechletResponse getAnswer(Slot query, final Session session) {
+
+        def speechText
+
+        int guessedAnswer = Integer.parseInt(query.getValue()) - 1
+        log.info("Guessed answer is:  " + query.getValue())
+
+        return processAnswer(session, guessedAnswer)
+    }
+
+    private SpeechletResponse processAnswer(Session session, int guessedAnswer) {
+        def speechText
+        Question question = (Question) session.getAttribute("lastQuestionAsked")
+        def answer = question.getAnswer()
+        log.info("correct answer is:  " + answer)
+
+        if (guessedAnswer == answer) {
+            speechText = "You got it right."
+        } else {
+            speechText = "You got it wrong."
+        }
+        tellResponse(speechText, speechText)
+    }
 
 }
