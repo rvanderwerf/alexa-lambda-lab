@@ -1,4 +1,4 @@
-# heroQuiz
+# heroQuiz lab 1 - 2
 Alexa Skills / Lambda / Groovy example Super Hero Quiz App
 
 Steps to get running:
