@@ -1,7 +1,5 @@
- languageChoice
-    - Java
-    - Groovy
-    - Ruby
-    - Fortran
-    - Cobol
-    - Javascript
+LIST_OF_ANSWERS
+    - 1
+    - 2
+    - 3
+    - 4

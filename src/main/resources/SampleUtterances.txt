@@ -1,5 +1,23 @@
-ResponseIntent {test|Answer}
-ResponseIntent {last player|Answer}
-ResponseIntent {test test|Answer}
-ResponseIntent {test test test|Answer}
-ResponseIntent {test test test test|Answer}
+AnswerIntent the answer is {Answer}
+AnswerIntent my answer is {Answer}
+AnswerIntent is it {Answer}
+AnswerIntent {Answer} is my answer
+
+AMAZON.RepeatIntent repeat
+AMAZON.RepeatIntent repeat question
+AMAZON.RepeatIntent repeat the question
+AMAZON.RepeatIntent repeat the last question
+
+AMAZON.StopIntent stop
+AMAZON.StopIntent stop game
+AMAZON.StopIntent end game
+
+AMAZON.CancelIntent cancel
+AMAZON.CancelIntent cancel game
+
+AMAZON.HelpIntent help
+AMAZON.HelpIntent help me
+
+DontKnowIntent i don't know
+DontKnowIntent don't know
+DontKnowIntent no clue

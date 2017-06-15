@@ -39,6 +39,11 @@ public class LambdaSpeechlet implements Speechlet {
             throws SpeechletException {
         log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(),
                 session.getSessionId())
+        LinkedHashMap<String, Question> askedQuestions = new LinkedHashMap()
+        session.setAttribute("askedQuestions", askedQuestions)
+        session.setAttribute("questionCounter", 1)
+        session.setAttribute("score", 0)
+        //initializeComponents(session)
         // any initialization logic goes here
     }
 
@@ -59,16 +64,59 @@ public class LambdaSpeechlet implements Speechlet {
         Slot languageChoice = intent.getSlot("languageChoice")
         String intentName = (intent != null) ? intent.getName() : null
         switch (intentName) {
-            case "responseIntent":
-                getWelcomeResponse(session)
+            case "AnswerIntent":
+                getAnswer(intent.getSlot("Answer"), session)
                 break
-            case "LambdaResponseIntent":
-                return lambdaResponse(session, languageChoice)
+            case "DontKnowIntent":
+                processAnswer(session, 5)
+                break
+            case "AMAZON.HelpIntent":
+                getHelpResponse(session)
+                break
+            case "AMAZON.CancelIntent":
+                sayGoodbye()
+                break
+            case "AMAZON.RepeatIntent":
+                repeatQuestion(session)
+                break
+            case "AMAZON.StopIntent":
+                sayGoodbye()
                 break
             default:
-                getWelcomeResponse(session)
+                didNotUnderstand()
                 break
         }
+    }
+
+    private SpeechletResponse didNotUnderstand() {
+        String speechText = "I'm sorry.  I didn't understand what you said.  Say help me for help.";
+        askResponse(speechText, speechText)
+    }
+
+    private SpeechletResponse sayGoodbye() {
+        String speechText = "OK.  I'm going to stop the game now.";
+        tellResponse(speechText, speechText)
+    }
+
+    private SpeechletResponse repeatQuestion(final Session session) {
+        Question question = (Question) session.getAttribute("lastQuestionAsked")
+        String speechText = ""
+
+        speechText += "\n"
+        speechText += question.getQuestion() + "\n"
+        String[] options = question.getOptions()
+        int index = 1
+        for(String option: options) {
+            speechText += (index++) + "\n\n\n\n" + option + "\n\n\n"
+        }
+        askResponse(speechText, speechText)
+
+    }
+
+    private SpeechletResponse getHelpResponse(Session session) {
+        String speechText = ""
+        speechText = "You can say stop or cancel to end the game at any time.  If you need a question repeated, say repeat question.";
+        askResponse(speechText, speechText)
     }
 
     private SpeechletResponse getAnswer(Slot query, final Session session) {
@@ -183,6 +231,7 @@ public class LambdaSpeechlet implements Speechlet {
         for(String option: options) {
             speechText += (index++) + "\n\n\n\n" + option + "\n\n\n"
         }
+        session.setAttribute("lastQuestionAsked", question)
         speechText
     }
 
