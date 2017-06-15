@@ -16,7 +16,7 @@ import com.amazon.speech.ui.SimpleCard
 import com.amazon.speech.ui.SsmlOutputSpeech
 import groovy.transform.CompileStatic
 import com.vanderfox.lambda.question.Question
-import org.slf4j.Logger;
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.dynamodbv2.document.Table
